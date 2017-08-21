@@ -21,7 +21,7 @@ distfile = $(distdir).tar.gz
 SHELL	= @SHELL@
 CC      = @CC@
 INCLUDE = @INCLUDE@
-CFLAGS  = @BUILD_CFLAGS@
+CFLAGS  = @BUILD_CFLAGS@ -include include/SDL_config.h
 EXTRA_CFLAGS = @EXTRA_CFLAGS@
 LDFLAGS = @BUILD_LDFLAGS@
 EXTRA_LDFLAGS = @EXTRA_LDFLAGS@
@@ -43,7 +43,9 @@ SDLMAIN_LDFLAGS = @SDLMAIN_LDFLAGS@
 
 DIST = acinclude autogen.sh Borland.html Borland.zip BUGS build-scripts configure configure.in COPYING CREDITS CWprojects.sea.bin docs docs.html include INSTALL Makefile.dc Makefile.minimal Makefile.in MPWmake.sea.bin README* sdl-config.in sdl.m4 sdl.pc.in SDL.qpg.in SDL.spec SDL.spec.in src test TODO VisualCE VisualC.html VisualC Watcom-OS2.zip Watcom-Win32.zip symbian.zip WhatsNew Xcode
 
-HDRS = SDL.h SDL_active.h SDL_audio.h SDL_byteorder.h SDL_cdrom.h SDL_cpuinfo.h SDL_endian.h SDL_error.h SDL_events.h SDL_getenv.h SDL_joystick.h SDL_keyboard.h SDL_keysym.h SDL_loadso.h SDL_main.h SDL_mouse.h SDL_mutex.h SDL_name.h SDL_opengl.h SDL_platform.h SDL_quit.h SDL_rwops.h SDL_stdinc.h SDL_syswm.h SDL_thread.h SDL_timer.h SDL_types.h SDL_version.h SDL_video.h begin_code.h close_code.h
+HDRS = SDL.h SDL_active.h SDL_audio.h SDL_byteorder.h SDL_cdrom.h SDL_cpuinfo.h SDL_endian.h SDL_error.h SDL_events.h SDL_getenv.h SDL_joystick.h SDL_keyboard.h SDL_keysym.h SDL_loadso.h SDL_main.h SDL_mouse.h SDL_mutex.h SDL_name.h SDL_opengl.h SDL_platform.h SDL_quit.h SDL_rwops.h SDL_stdinc.h SDL_syswm.h SDL_thread.h SDL_timer.h SDL_types.h SDL_version.h SDL_video.h begin_code.h close_code.h \
+	SDL_clipboard.h SDL_screenkeyboard.h \
+	SDL_config.h SDL_config_android.h SDL_config_dreamcast.h SDL_config_macos.h SDL_config_macosx.h SDL_config_nds.h SDL_config_os2.h SDL_config_symbian.h SDL_config_win32.h
 
 LT_AGE      = @LT_AGE@
 LT_CURRENT  = @LT_CURRENT@
@@ -87,7 +89,7 @@ install-hdrs:
 	for file in $(HDRS); do \
 	    $(INSTALL) -m 644 $(srcdir)/include/$$file $(DESTDIR)$(includedir)/SDL/$$file; \
 	done
-	$(INSTALL) -m 644 include/SDL_config.h $(DESTDIR)$(includedir)/SDL/SDL_config.h
+	$(INSTALL) -m 644 include/SDL_config_autoconf.h $(DESTDIR)$(includedir)/SDL/SDL_config_autoconf.h
 install-lib: $(objects) $(objects)/$(TARGET) $(objects)/$(SDLMAIN_TARGET)
 	$(SHELL) $(auxdir)/mkinstalldirs $(DESTDIR)$(libdir)
 	$(LIBTOOL) --mode=install $(INSTALL) $(objects)/$(TARGET) $(DESTDIR)$(libdir)/$(TARGET)
@@ -111,7 +113,7 @@ uninstall-hdrs:
 	for file in $(HDRS); do \
 	    rm -f $(DESTDIR)$(includedir)/SDL/$$file; \
 	done
-	rm -f $(DESTDIR)$(includedir)/SDL/SDL_config.h
+	rm -f $(DESTDIR)$(includedir)/SDL/SDL_config_autoconf.h
 	-rmdir $(DESTDIR)$(includedir)/SDL
 uninstall-lib:
 	$(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$(TARGET)
@@ -130,7 +132,7 @@ clean:
 	if test -f test/Makefile; then (cd test; $(MAKE) $@); fi
 
 distclean: clean
-	rm -f Makefile include/SDL_config.h sdl-config
+	rm -f Makefile include/SDL_config_autoconf.h sdl-config
 	rm -f SDL.qpg
 	rm -f config.status config.cache config.log libtool $(depend)
 	rm -rf $(srcdir)/autom4te*

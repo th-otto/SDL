@@ -116,6 +116,9 @@ static AudioBootStrap *bootstrap[] = {
 #if SDL_AUDIO_DRIVER_EPOCAUDIO
 	&EPOCAudio_bootstrap,
 #endif
+#if SDL_AUDIO_DRIVER_ANDROID
+	&ANDROIDAUD_bootstrap,
+#endif
 	NULL
 };
 SDL_AudioDevice *current_audio = NULL;

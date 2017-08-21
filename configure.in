@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(README)
-AC_CONFIG_HEADER(include/SDL_config.h)
+AC_CONFIG_HEADER(include/SDL_config_autoconf.h:include/SDL_config.h.in)
 AC_GNU_SOURCE
 AC_CONFIG_AUX_DIRS($srcdir/build-scripts)
 
@@ -56,6 +56,8 @@ fi
 dnl Check for tools
 AC_PROG_LIBTOOL
 AC_PROG_CC
+AC_USE_SYSTEM_EXTENSIONS
+AC_SYS_LARGEFILE
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
@@ -66,8 +68,8 @@ INCLUDE="-I$srcdir/include"
 if test x$srcdir != x.; then
     # Remove SDL_config.h from the source directory, since it's the
     # default one, and we want to include the one that we generate.
-    if test -f $srcdir/include/SDL_config.h; then
-        rm $srcdir/include/SDL_config.h
+    if test -f $srcdir/include/SDL_config_autoconf.h; then
+        rm $srcdir/include/SDL_config_autoconf.h
     fi
     INCLUDE="-Iinclude $INCLUDE"
 fi

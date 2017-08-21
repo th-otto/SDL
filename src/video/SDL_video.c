@@ -30,6 +30,9 @@
 #include "SDL_cursor_c.h"
 #include "../events/SDL_sysevents.h"
 #include "../events/SDL_events_c.h"
+#ifdef __ANDROID__
+#include <android/log.h>
+#endif
 
 /* Available video drivers */
 static VideoBootStrap *bootstrap[] = {
@@ -125,6 +128,9 @@ static VideoBootStrap *bootstrap[] = {
 #endif
 #if SDL_VIDEO_DRIVER_CACA
 	&CACA_bootstrap,
+#endif
+#if SDL_VIDEO_DRIVER_ANDROID
+	&ANDROID_bootstrap,
 #endif
 #if SDL_VIDEO_DRIVER_DUMMY
 	&DUMMY_bootstrap,
@@ -501,6 +507,7 @@ static int SDL_GetVideoMode (int *w, int *h, int *BitsPerPixel, Uint32 flags)
 /* This should probably go somewhere else -- like SDL_surface.c */
 static void SDL_ClearSurface(SDL_Surface *surface)
 {
+#ifndef __ANDROID__
 	Uint32 black;
 
 	black = SDL_MapRGB(surface->format, 0, 0, 0);
@@ -512,6 +519,7 @@ static void SDL_ClearSurface(SDL_Surface *surface)
 	if (surface->flags&SDL_FULLSCREEN) {
 		SDL_Flip(surface);
 	}
+#endif
 }
 
 /*
@@ -594,11 +602,17 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 		sysevents_mouse_pressed = 0;
 	#endif
 
+#ifdef __ANDROID__
+	__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "calling SDL_SetVideoMode(%d, %d, %d, %d)", width, height, bpp, flags);
+#endif
 	/* Start up the video driver, if necessary..
 	   WARNING: This is the only function protected this way!
 	 */
 	if ( ! current_video ) {
 		if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_NOPARACHUTE) < 0 ) {
+#ifdef __ANDROID__
+			__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): SDL_Init() failed, returning NULL");
+#endif
 			return(NULL);
 		}
 	}
@@ -622,6 +636,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 	video_h = height;
 	video_bpp = bpp;
 	if ( ! SDL_GetVideoMode(&video_w, &video_h, &video_bpp, flags) ) {
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): SDL_GetVideoMode() failed, returning NULL");
+#endif
 		return(NULL);
 	}
 
@@ -690,6 +707,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 	    /* Sam - If we asked for OpenGL mode, and didn't get it, fail */
 	    if ( is_opengl && !(mode->flags & SDL_OPENGL) ) {
 		mode = NULL;
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): app requests OpenGL, we cannot provide that");
+#endif
 		SDL_SetError("OpenGL not available");
 	    }
 	}
@@ -709,6 +729,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 	if ( (mode != NULL) && (!is_opengl) ) {
 		/* Sanity check */
 		if ( (mode->w < width) || (mode->h < height) ) {
+#ifdef __ANDROID__
+			__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): Video mode smaller than requested, returning NULL");
+#endif
 			SDL_SetError("Video mode smaller than requested");
 			return(NULL);
 		}
@@ -739,6 +762,11 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 		width, height, bpp,
 		mode->w, mode->h, mode->format->BitsPerPixel, mode->offset);
 #endif
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): Requested mode: %dx%dx%d, obtained mode %dx%dx%d",
+			width, height, bpp,
+			mode->w, mode->h, mode->format->BitsPerPixel);
+#endif
 		mode->w = width;
 		mode->h = height;
 		SDL_SetClipRect(mode, NULL);
@@ -748,6 +776,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 
 	/* If we failed setting a video mode, return NULL... (Uh Oh!) */
 	if ( mode == NULL ) {
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): failed to set video mode, returning NULL");
+#endif
 		return(NULL);
 	}
 
@@ -907,6 +938,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 		SDL_CreateShadowSurface(bpp);
 		if ( SDL_ShadowSurface == NULL ) {
 			SDL_SetError("Couldn't create shadow surface");
+#ifdef __ANDROID__
+			__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): failed create shadow surface, returning NULL");
+#endif
 			return(NULL);
 		}
 		SDL_PublicSurface = SDL_ShadowSurface;
@@ -918,6 +952,9 @@ SDL_Surface * SDL_SetVideoMode (int width, int height, int bpp, Uint32 flags)
 	video->info.current_h = SDL_VideoSurface->h;
 
 	/* We're done! */
+#ifdef __ANDROID__
+	__android_log_print(ANDROID_LOG_VERBOSE, "libSDL", "SDL_SetVideoMode(): returning surface %p", SDL_PublicSurface);
+#endif
 	return(SDL_PublicSurface);
 }
 
@@ -1433,7 +1470,12 @@ void *SDL_GL_GetProcAddress(const char* proc)
 
 	func = NULL;
 	if ( video->GL_GetProcAddress ) {
-		if ( video->gl_config.driver_loaded ) {
+#ifdef __ANDROID__
+		if ( 1 )
+#else
+		if ( video->gl_config.driver_loaded )
+#endif
+		{
 			func = video->GL_GetProcAddress(this, proc);
 		} else {
 			SDL_SetError("No GL driver has been loaded");

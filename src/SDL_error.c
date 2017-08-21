@@ -25,6 +25,9 @@
 
 #include "SDL_error.h"
 #include "SDL_error_c.h"
+#ifdef __ANDROID__
+#include <android/log.h>
+#endif
 
 /* Routine to get the thread-specific error variable */
 #if SDL_THREADS_DISABLED
@@ -109,6 +112,9 @@ void SDL_SetError (const char *fmt, ...)
 	/* If we are in debug mode, print out an error message */
 #ifdef DEBUG_ERROR
 	fprintf(stderr, "SDL_SetError: %s\n", SDL_GetError());
+#endif
+#ifdef __ANDROID__
+    __android_log_print(ANDROID_LOG_ERROR, "libSDL", "ERROR: %s", SDL_GetError());
 #endif
 }
 

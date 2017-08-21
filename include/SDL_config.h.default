@@ -38,8 +38,10 @@
 #include "SDL_config_win32.h"
 #elif defined(__OS2__)
 #include "SDL_config_os2.h"
+#elif defined(__ANDROID__)
+#include "SDL_config_android.h"
 #else
-#include "SDL_config_minimal.h"
+#include "SDL_config_autoconf.h"
 #endif /* platform config */
 
 #endif /* _SDL_config_h */

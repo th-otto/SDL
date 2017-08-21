@@ -1,0 +1,8 @@
+SDL on Android
+==============
+
+This is the port of the SDL library to android,
+done by pelya and forked from https://github.com/pelya/commandergenius.
+
+It contains just a separate branch, merging in his changes to the SDL-1.2
+branch.
