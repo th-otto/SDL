@@ -29,5 +29,3 @@ If you compile this code with SDL 1.3 or newer, or use in some other way, the li
 /* OpenGL renderer implementation */
 
 extern SDL_RenderDriver GL_ES_RenderDriver;
-
-/* vi: set ts=4 sw=4 expandtab: */

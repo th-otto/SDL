@@ -514,6 +514,3 @@ extern void qsortG(void *base, size_t nmemb, size_t size,
 }
 
 #endif /* ifndef HAVE_QSORT */
-
-/* vi: set ts=4 sw=4 expandtab: */
-

@@ -70,5 +70,3 @@ typedef enum
 #include "close_code.h"
 
 #endif /* _SDL_video_h */
-
-/* vi: set ts=4 sw=4 expandtab: */

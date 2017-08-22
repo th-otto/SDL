@@ -407,5 +407,3 @@ SDL_FreeDirtyRects(SDL_DirtyRectList * list)
         SDL_free(elem);
     }
 }
-
-/* vi: set ts=4 sw=4 expandtab: */

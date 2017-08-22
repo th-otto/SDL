@@ -1436,5 +1436,3 @@ void SDL_PrivateAndroidSetDesktopMode(SDL_Window * window, int w, int h);
 #include "close_code.h"
 
 #endif /* _SDL_video_h */
-
-/* vi: set ts=4 sw=4 expandtab: */

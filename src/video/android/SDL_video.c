@@ -3693,5 +3693,3 @@ void SDL_PrivateAndroidSetDesktopMode(SDL_Window * window, int w, int h)
     window->display->desktop_mode.w = w;
     window->display->desktop_mode.h = h;
 }
-
-/* vi: set ts=4 sw=4 expandtab: */

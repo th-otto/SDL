@@ -468,5 +468,3 @@ extern void SDL_OnWindowFocusLost(SDL_Window * window);
 extern SDL_Window * SDL_GetFocusWindow(void);
 
 #endif /* _SDL_sysvideo_h */
-
-/* vi: set ts=4 sw=4 expandtab: */

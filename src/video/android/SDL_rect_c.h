@@ -42,5 +42,3 @@ typedef struct SDL_DirtyRectList
 extern void SDL_AddDirtyRect(SDL_DirtyRectList * list, const SDL_Rect * rect);
 extern void SDL_ClearDirtyRects(SDL_DirtyRectList * list);
 extern void SDL_FreeDirtyRects(SDL_DirtyRectList * list);
-
-/* vi: set ts=4 sw=4 expandtab: */

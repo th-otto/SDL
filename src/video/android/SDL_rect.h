@@ -143,5 +143,3 @@ extern DECLSPEC SDL_bool SDLCALL SDL_IntersectRectAndLine(const SDL_Rect *
 #include "close_code.h"
 
 #endif /* _SDL_rect_h */
-
-/* vi: set ts=4 sw=4 expandtab: */

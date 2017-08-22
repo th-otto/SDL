@@ -1048,5 +1048,3 @@ GLES_DestroyRenderer(SDL_Renderer * renderer)
 }
 
 #endif /* SDL_VIDEO_RENDER_OGL_ES */
-
-/* vi: set ts=4 sw=4 expandtab: */
