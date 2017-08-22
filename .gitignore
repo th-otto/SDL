@@ -15,7 +15,7 @@ build
 build-deps
 .DS_Store
 sdl.pc
-include/SDL_config.h
+include/SDL_config_autoconf.h
 test/aclocal.m4
 test/autom4te*
 test/config.cache
