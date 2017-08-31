@@ -1462,7 +1462,7 @@ int X11_SetColors(_THIS, int firstcolor, int ncolors, SDL_Color *colors)
 
 int X11_SetGammaRamp(_THIS, Uint16 *ramp)
 {
-	int i, ncolors;
+	int i, result, ncolors;
 	XColor xcmap[256];
 
 	/* See if actually setting the gamma is supported */
@@ -1481,13 +1481,13 @@ int X11_SetGammaRamp(_THIS, Uint16 *ramp)
 		xcmap[i].blue  = ramp[2*256+c];
 		xcmap[i].flags = (DoRed|DoGreen|DoBlue);
 	}
-	i = 0;
+	result = 0;
 	if ( XStoreColors(GFX_Display, SDL_XColorMap, xcmap, ncolors) == False ) {
 		SDL_SetError("Setting gamma correction failed");
-		i = -1;
+		result = -1;
 	}
 	XSync(GFX_Display, False);
-	return i;
+	return result;
 }
 
 /* Note:  If we are terminated, this could be called in the middle of
