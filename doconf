@@ -1,0 +1,27 @@
+prefix=/usr
+CFLAGS="-O2 -g -m64 -fmessage-length=0 -D_FORTIFY_SOURCE=2 -fstack-protector -funwind-tables -fasynchronous-unwind-tables" \
+CXXFLAGS="-O2 -g -m64 -fmessage-length=0 -D_FORTIFY_SOURCE=2 -fstack-protector -funwind-tables -fasynchronous-unwind-tables" \
+./configure --prefix=$prefix \
+	--exec-prefix=$prefix \
+	--bindir=$prefix/bin \
+	--sbindir=$prefix/sbin \
+	--sysconfdir=/etc \
+	--datadir=$prefix/share \
+	--includedir=$prefix/include \
+	--libdir=$prefix/lib64 \
+	--libexecdir=$prefix/lib \
+	--localstatedir=/var \
+	--sharedstatedir=/var/lib \
+	--mandir=$prefix/share/man \
+	--infodir=$prefix/share/info \
+	--disable-static \
+	--disable-rpath \
+	--disable-alsa-shared \
+	--disable-x11-shared \
+	--disable-pulseaudio-shared \
+	--disable-esd-shared \
+	--disable-osmesa-shared \
+	--disable-video-svga \
+	--disable-video-ps3 \
+	--with-pic \
+	${empty}
